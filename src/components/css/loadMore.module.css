@@ -1,0 +1,14 @@
+.loadMoreBtn{
+  padding: 10px 15px;
+  color: white;
+  background-color: blue;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.btnWrapper{
+  display: flex;
+  justify-content: center;
+}
