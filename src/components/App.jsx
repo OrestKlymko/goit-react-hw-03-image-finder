@@ -9,6 +9,7 @@ export class App extends Component {
     itemsPerPage: 12,
 
   };
+
   onSearch = searchQuery => {
     this.setState({ searchQuery });
   };

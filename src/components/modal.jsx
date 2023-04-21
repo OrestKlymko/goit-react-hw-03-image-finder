@@ -1,13 +1,14 @@
 import { Component } from 'react';
+import * as basicLightbox from 'basiclightbox';
 
 export class Modal extends Component {
-  state = {
-    modal: false,
-  };
-  componentDidMount() {
-    console.log('mount');
-    window.addEventListener('keydown', this.handlerKeydown);
-  }
+
+  // componentDidMount() {
+  //   console.log('mount');
+  //   window.addEventListener('keydown', this.handlerKeydown);
+  // }
+
+
   componentWillUnmount() {
     console.log('unmount');
     window.removeEventListener('keydown', this.handlerKeydown);
@@ -15,11 +16,20 @@ export class Modal extends Component {
 
   handlerKeydown = e => {
     if (e.key === 'Escape') {
-      this.props.children.close();
+      console.log('ss')
+      // basicLightbox.create(
+      //   `
+      //       <img src="" width="800" height="600" />`
+      // ).close()
     }
   };
 
   render() {
-    return <div>{this.props.children.show()}</div>;
-  }
+    const {largeImg} = this.props
+
+ return  basicLightbox.create(
+      `
+            <img src="${largeImg}" width="800" height="600" />`
+    ).show()}
+
 }
