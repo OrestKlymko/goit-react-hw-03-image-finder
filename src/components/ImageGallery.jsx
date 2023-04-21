@@ -3,6 +3,8 @@ import { ImageGalleryItem } from './ImageGalleryItem.jsx';
 import { Loader } from './Loader';
 import { LoadMore } from './LoadMore.jsx';
 import css from './css/imageGallery.module.css';
+import { Modal } from './modal';
+
 
 export class ImageGallery extends Component {
   state = {
@@ -10,17 +12,15 @@ export class ImageGallery extends Component {
     loader: false,
     loadMore: false,
     itemsPerPage: 12,
+    showModal:false,
+    largeImageURL:null,
+
   };
 
-  componentDidMount() {
-    console.log('mount');
-  }
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.onSubmit !== this.props.onSubmit ||
-      prevState.itemsPerPage !== this.state.itemsPerPage
+      prevProps.onSubmit.searchQuery!==this.props.onSubmit.searchQuery||prevState.itemsPerPage!==this.state.itemsPerPage
     ) {
-      console.log('update')
       const { searchQuery } = this.props.onSubmit;
       if (searchQuery.trim().length > 0) {
         this.setState({ loader: true, loadMore: false });
@@ -32,6 +32,7 @@ export class ImageGallery extends Component {
             if (data.total > 0) {
               this.setState({ collection: data.hits, loadMore: true });
             }
+            else alert('I can not find image')
           })
           .finally(() => {
             this.setState({ loader: false });
@@ -45,16 +46,24 @@ export class ImageGallery extends Component {
     this.setState({ itemsPerPage });
   };
 
+  getLargeImg=(largeImageURL)=>{
+    this.setState({largeImageURL})
+    this.setState({showModal:true})
+  }
+
+  closeModal=(data)=>{
+    this.setState(data)
+  }
+
+
   render() {
     return (
       <div>
-        <ul className={css.gallery}>
+        {this.state.collection&&<ul className={css.gallery} >
           {this.state.collection.map(element => (
-            <li className={css.gallery__item} key={element.id}>
-              <ImageGalleryItem collection={element} />
-            </li>
+              <ImageGalleryItem collection={element} key={element.id} getLargeImg={this.getLargeImg} />
           ))}
-        </ul>
+        </ul>}
         {this.state.loader && <Loader />}
         {this.state.loadMore && (
           <LoadMore
@@ -62,6 +71,7 @@ export class ImageGallery extends Component {
             onCount={this.state.itemsPerPage}
           />
         )}
+        {this.state.showModal && <Modal getLargeImg={this.state.largeImageURL} modal={this.closeModal}/>}
       </div>
     );
   }

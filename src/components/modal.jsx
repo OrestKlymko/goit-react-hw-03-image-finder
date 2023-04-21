@@ -1,35 +1,38 @@
 import { Component } from 'react';
-import * as basicLightbox from 'basiclightbox';
-
+import css from './css/modal.module.css'
 export class Modal extends Component {
-
-  // componentDidMount() {
-  //   console.log('mount');
-  //   window.addEventListener('keydown', this.handlerKeydown);
-  // }
-
-
-  componentWillUnmount() {
-    console.log('unmount');
-    window.removeEventListener('keydown', this.handlerKeydown);
+  componentDidMount() {
+    window.addEventListener('keydown',this.onClickEsc)
+    window.addEventListener('click',this.onClickModal)
   }
+  componentWillUnmount() {
+    window.removeEventListener('keydown',this.onClickEsc)
+    window.removeEventListener('click',this.onClickModal)  }
 
-  handlerKeydown = e => {
+  onClickEsc = (e)=> {
     if (e.key === 'Escape') {
-      console.log('ss')
-      // basicLightbox.create(
-      //   `
-      //       <img src="" width="800" height="600" />`
-      // ).close()
+      this.props.modal({ showModal: false })
     }
-  };
+  }
+  onClickModal = (e)=>{
+    const modal = document.querySelector('#modal');
+      if(e.target===modal){
+        modal.style.display='none'
+        this.props.modal({showModal:false })
+      }
+    }
+
+
+
 
   render() {
-    const {largeImg} = this.props
+const {getLargeImg} = this.props
 
- return  basicLightbox.create(
-      `
-            <img src="${largeImg}" width="800" height="600" />`
-    ).show()}
 
-}
+ return <div className={css.overlay} id="modal">
+   <div className={css.modal}>
+     <img src={getLargeImg} alt="" />
+   </div>
+ </div>
+
+}}
