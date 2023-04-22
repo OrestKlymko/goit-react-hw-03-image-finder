@@ -23,6 +23,7 @@ export class ImageGallery extends Component {
     ) {
       const { searchQuery } = this.props.onSubmit;
       const {itemsPerPage} = this.state;
+      this.setState({page:1})
       if (searchQuery.trim().length > 0) {
         this.setState({ loader: true, loadMore: false });
         const URL = `https://pixabay.com/api/?q=${searchQuery}&page=1&key=34338189-e9bdbbc7a13128854f573f779&image_type=photo&orientation=horizontal&per_page=${itemsPerPage}`;
